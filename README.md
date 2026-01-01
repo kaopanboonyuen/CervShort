@@ -95,10 +95,10 @@ This code is intended **for research purposes only** and is **not a certified me
 ## 👤 Author
 
 **Teerapong Panboonyuen**
-Khon Kaen University, Thailand
-📧 [teerapong.panboonyuen@gmail.com](mailto:teerapong.panboonyuen@gmail.com)
-🔗 Project page: [https://kaopanboonyuen.github.io/CervShort/](https://kaopanboonyuen.github.io/CervShort/)
-🆔 ORCID: 0000-0001-8464-4476
+
+- 📧 [teerapong.panboonyuen@gmail.com](mailto:teerapong.panboonyuen@gmail.com)
+- 🔗 Project page: [https://kaopanboonyuen.github.io/CervShort/](https://kaopanboonyuen.github.io/CervShort/)
+- 🆔 ORCID: 0000-0001-8464-4476
 
 ---
 
