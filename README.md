@@ -1,7 +1,25 @@
 # CervShort  
-**Domain-Aware Shortcut Disruption for Robust Cervical Cytology Classification**  
-<br>
-**Teerapong Panboonyuen**
+**Domain-Aware Shortcut Disruption for Robust Cervical Cytology Classification**
+
+<p align="center">
+  <strong>Author:</strong> Teerapong Panboonyuen &nbsp;•&nbsp;
+  <em>Under Review at IEEE Transactions on Medical Imaging (TMI) 2026</em>
+</p>
+
+<p align="center">
+  <a href="#">
+    <img src="https://img.shields.io/badge/Paper-Under%20Review-blue.svg" alt="Paper">
+  </a>
+  <a href="https://kaopanboonyuen.github.io/CervShort/">
+    <img src="https://img.shields.io/badge/Project-Website-brightgreen.svg" alt="Project">
+  </a>
+  <a href="#">
+    <img src="https://img.shields.io/badge/License-Research%20Only-lightgrey.svg" alt="License">
+  </a>
+  <a href="#">
+    <img src="https://img.shields.io/badge/Status-Code%20Release%20Pending-orange.svg" alt="Status">
+  </a>
+</p>
 
 <p align="center">
   <img src="img/CervShort_MAIN.png" width="90%">
