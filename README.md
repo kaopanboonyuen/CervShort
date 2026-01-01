@@ -1,6 +1,7 @@
-# CervShort
-
-**Domain-Aware Shortcut Disruption for Robust Cervical Cytology Classification**
+# CervShort  
+**Domain-Aware Shortcut Disruption for Robust Cervical Cytology Classification**  
+<br>
+**Teerapong Panboonyuen**
 
 <p align="center">
   <img src="img/CervShort_MAIN.png" width="90%">
