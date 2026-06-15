@@ -3,7 +3,7 @@
 
 <p align="center">
   <strong>Author:</strong> Teerapong Panboonyuen &nbsp;•&nbsp;
-  <em>Under Review at IEEE Transactions on Medical Imaging (TMI) 2026</em>
+  <em>Under Review 2026</em>
 </p>
 
 <p align="center">
@@ -99,7 +99,6 @@ CervShort/
 This repository accompanies the submission:
 
 > **CervShort: Domain-Aware Shortcut Disruption for Robust Cervical Cancer Cytology Classification**
-> *Submitted to IEEE Transactions on Medical Imaging (TMI), 2026.*
 
 A BibTeX entry will be released upon acceptance.
 

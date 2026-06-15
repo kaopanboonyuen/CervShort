@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CervShort: Domain-Aware Shortcut Disruption for Robust Cervical Cancer Cytology Classification</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:        #0d0f14;
+      --mist:       #f6f7fb;
+      --slate:      #5a6278;
+      --rule:       #e2e5ef;
+      --accent:     #6246ea;       /* deep violet — the lab's signature */
+      --accent-lt:  #ede9ff;
+      --teal:       #00b4a6;       /* complementary on data charts */
+      --danger:     #e63946;
+      --white:      #ffffff;
+      --fs-xs:      0.75rem;
+      --fs-sm:      0.875rem;
+      --fs-base:    1rem;
+      --fs-lg:      1.125rem;
+      --fs-xl:      1.5rem;
+      --fs-2xl:     2rem;
+      --fs-3xl:     2.75rem;
+      --fs-hero:    3.75rem;
+      --mono: 'JetBrains Mono', monospace;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --sans: 'Inter', system-ui, sans-serif;
+      --radius: 10px;
+      --shadow: 0 2px 20px rgba(13,15,20,.08);
+      --shadow-lg: 0 8px 40px rgba(13,15,20,.13);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      background: var(--white);
+      color: var(--ink);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--rule);
+      padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 56px;
+    }
+    .nav-brand {
+      font-family: var(--mono);
+      font-weight: 500;
+      font-size: var(--fs-sm);
+      color: var(--accent);
+      letter-spacing: -.01em;
+    }
+    .nav-links { display: flex; gap: 1.75rem; }
+    .nav-links a {
+      text-decoration: none;
+      font-size: var(--fs-sm);
+      font-weight: 500;
+      color: var(--slate);
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 5rem 2rem 3.5rem;
+      text-align: center;
+    }
+    .venue-badge {
+      display: inline-flex; align-items: center; gap: .45rem;
+      background: var(--accent-lt);
+      color: var(--accent);
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: .3rem .85rem;
+      border-radius: 99px;
+      margin-bottom: 1.6rem;
+    }
+    .venue-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 5vw, var(--fs-hero));
+      line-height: 1.12;
+      letter-spacing: -.03em;
+      color: var(--ink);
+      margin-bottom: 1rem;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .hero-subtitle {
+      font-size: var(--fs-lg);
+      color: var(--slate);
+      max-width: 660px;
+      margin: 0 auto 2.4rem;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+
+    /* authors */
+    .authors {
+      font-size: var(--fs-sm);
+      color: var(--slate);
+      margin-bottom: 1.8rem;
+      line-height: 2;
+    }
+    .authors strong { color: var(--ink); font-weight: 600; }
+    .authors a { color: var(--accent); text-decoration: none; }
+    .affil { font-size: var(--fs-xs); color: var(--slate); margin-top: .25rem; }
+
+    /* CTA buttons */
+    .btn-row {
+      display: flex; flex-wrap: wrap; gap: .75rem;
+      justify-content: center; margin-bottom: 3.5rem;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: .45rem;
+      font-size: var(--fs-sm); font-weight: 600;
+      padding: .6rem 1.4rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-lg); }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-outline {
+      background: var(--white); color: var(--ink);
+      border: 1.5px solid var(--rule);
+    }
+    .btn svg { width: 16px; height: 16px; }
+
+    /* ── ABSTRACT ── */
+    .section {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 3.5rem 2rem;
+    }
+    .section-wide {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3.5rem 2rem;
+    }
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: var(--fs-xs);
+      font-weight: 500;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .75rem;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: var(--fs-2xl);
+      line-height: 1.2;
+      letter-spacing: -.02em;
+      margin-bottom: 1.25rem;
+    }
+    .abstract-text {
+      font-size: var(--fs-base);
+      color: var(--slate);
+      border-left: 3px solid var(--accent);
+      padding-left: 1.25rem;
+      line-height: 1.85;
+    }
+
+    hr.divider {
+      border: none;
+      border-top: 1px solid var(--rule);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--ink);
+      padding: 2.5rem 2rem;
+    }
+    .stats-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 2rem;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: var(--serif);
+      font-size: 2.6rem;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: .3rem;
+    }
+    .stat-num span { color: var(--teal); }
+    .stat-label {
+      font-size: var(--fs-xs);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: rgba(255,255,255,.5);
+      font-weight: 500;
+    }
+
+    /* ── ARCHITECTURE FIGURE ── */
+    .fig-block {
+      background: var(--mist);
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+    .fig-block img {
+      width: 100%;
+      display: block;
+    }
+    .fig-caption {
+      font-size: var(--fs-sm);
+      color: var(--slate);
+      line-height: 1.6;
+      padding: 1rem 1.25rem;
+      border-top: 1px solid var(--rule);
+    }
+    .fig-caption strong { color: var(--ink); }
+
+    /* ── RESULTS GRID ── */
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    @media (max-width: 700px) {
+      .results-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── METHOD CARDS ── */
+    .method-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-top: 2rem;
+    }
+    .method-card {
+      background: var(--mist);
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .method-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--accent);
+    }
+    .method-card:nth-child(2)::before { background: var(--teal); }
+    .method-card:nth-child(3)::before { background: #f4a261; }
+    .method-num {
+      font-family: var(--mono);
+      font-size: var(--fs-xs);
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: .5rem;
+    }
+    .method-card:nth-child(2) .method-num { color: var(--teal); }
+    .method-card:nth-child(3) .method-num { color: #f4a261; }
+    .method-card h3 {
+      font-size: var(--fs-base);
+      font-weight: 700;
+      margin-bottom: .5rem;
+      line-height: 1.3;
+    }
+    .method-card p {
+      font-size: var(--fs-sm);
+      color: var(--slate);
+      line-height: 1.6;
+    }
+
+    /* ── TABLE ── */
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      margin-top: 2rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--fs-sm);
+    }
+    thead { background: var(--ink); color: var(--white); }
+    thead th {
+      padding: .75rem 1rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: var(--fs-xs);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    tbody tr { border-bottom: 1px solid var(--rule); transition: background .15s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--mist); }
+    tbody td { padding: .7rem 1rem; color: var(--slate); }
+    tbody td:first-child { color: var(--ink); font-weight: 500; }
+    .best { color: var(--accent); font-weight: 700; }
+    .row-ours td { background: var(--accent-lt); }
+    .row-ours td:first-child { color: var(--accent); }
+
+    /* ── CONTRIBUTIONS ── */
+    .contrib-list { list-style: none; margin-top: 1.5rem; }
+    .contrib-list li {
+      display: grid;
+      grid-template-columns: 2.5rem 1fr;
+      gap: 1rem;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--rule);
+      align-items: start;
+    }
+    .contrib-list li:last-child { border-bottom: none; }
+    .contrib-num {
+      font-family: var(--mono);
+      font-size: var(--fs-xl);
+      font-weight: 500;
+      color: var(--rule);
+      line-height: 1;
+      padding-top: .15rem;
+    }
+    .contrib-text { font-size: var(--fs-base); color: var(--slate); line-height: 1.65; }
+    .contrib-text strong { color: var(--ink); }
+
+    /* ── CITATION ── */
+    .citation-box {
+      background: var(--ink);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+      position: relative;
+    }
+    .citation-box pre {
+      font-family: var(--mono);
+      font-size: var(--fs-xs);
+      color: rgba(255,255,255,.75);
+      white-space: pre-wrap;
+      line-height: 1.7;
+    }
+    .copy-btn {
+      position: absolute; top: 1rem; right: 1rem;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.2);
+      color: rgba(255,255,255,.7);
+      font-family: var(--mono);
+      font-size: var(--fs-xs);
+      padding: .35rem .7rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .copy-btn:hover { background: rgba(255,255,255,.2); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2.5rem 2rem;
+      font-size: var(--fs-sm);
+      color: var(--slate);
+      border-top: 1px solid var(--rule);
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    /* ── FADE-IN ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 600px) {
+      nav { display: none; }
+      .hero { padding: 3rem 1.25rem 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-brand">CervShort</span>
+  <div class="nav-links">
+    <a href="#abstract">Abstract</a>
+    <a href="#method">Method</a>
+    <a href="#results">Results</a>
+    <a href="#contributions">Contributions</a>
+    <a href="#citation">Citation</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero reveal">
+  <div class="venue-badge">Scientific Reports · 2026</div>
+
+  <h1>CervShort: <em>Domain-Aware</em> Shortcut Disruption for Robust Cervical Cancer Cytology Classification</h1>
+
+  <p class="hero-subtitle">
+    A tri-path feature purification framework that isolates true pathological morphology from spurious acquisition artifacts — achieving state-of-the-art cross-center robustness in cervical cytology AI.
+  </p>
+
+  <div class="authors">
+    <strong>Teerapong Panboonyuen</strong><br />
+    <span class="affil">
+      College of Computing, Khon Kaen University &amp; MAPS Research Center, Chulalongkorn University, Thailand<br />
+      Supported by C2F Postdoctoral Fellowship, Chulalongkorn University
+    </span>
+  </div>
+
+  <div class="btn-row">
+    <a class="btn btn-primary" href="https://github.com/kaopanboonyuen/CervShort" target="_blank">
+      <!-- GitHub icon -->
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      Code
+    </a>
+    <a class="btn btn-outline" href="#abstract">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h12M2 8h8M2 12h10"/></svg>
+      Paper
+    </a>
+    <a class="btn btn-outline" href="#results">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="10" width="3" height="5"/><rect x="6" y="6" width="3" height="9"/><rect x="11" y="2" width="3" height="13"/></svg>
+      Results
+    </a>
+  </div>
+
+  <!-- Main architecture figure -->
+  <div class="fig-block reveal">
+    <img src="img/CervShort_MAIN.png" alt="CervShort architecture overview" />
+    <p class="fig-caption">
+      <strong>Figure 1.</strong> Overview of the CervShort architecture. CervShort explicitly disentangles pathological morphology from spurious acquisition cues via a Shortcut–Perturbation Module (SPM) and a Morphology Encoder, enforced by a Cross-Branch Contrastive Alignment loss that prevents overreliance on scanner artifacts, color biases, or staining inconsistencies.
+    </p>
+  </div>
+</header>
+
+<!-- STATS BAR -->
+<div class="stats-bar reveal">
+  <div class="stats-inner">
+    <div>
+      <div class="stat-num">95<span>.9%</span></div>
+      <div class="stat-label">Average AUC (ViT-L/16)</div>
+    </div>
+    <div>
+      <div class="stat-num">8<span>.7%</span></div>
+      <div class="stat-label">FPR95 — 3× lower than baseline</div>
+    </div>
+    <div>
+      <div class="stat-num">25<span>K+</span></div>
+      <div class="stat-label">Annotated cytology patches</div>
+    </div>
+    <div>
+      <div class="stat-num">5</div>
+      <div class="stat-label">Independent clinical laboratories</div>
+    </div>
+    <div>
+      <div class="stat-num">94<span>.7%</span></div>
+      <div class="stat-label">Sensitivity — exceeds senior cytotechnologists</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- ABSTRACT -->
+<section class="section reveal" id="abstract">
+  <p class="eyebrow">Abstract</p>
+  <h2 class="section-title">Disrupting Shortcuts, Restoring Morphology</h2>
+  <p class="abstract-text">
+    Deep cervical cytology classifiers often exploit superficial cues — illumination drift, slide preparation artifacts, background debris — rather than pathological cell morphology, leading to poor generalization across laboratories. We introduce <strong>CervShort</strong>, a domain-aware shortcut disruption framework tailored for cytology-based cervical cancer screening. CervShort employs a <em>tri-path feature purification module</em> that (1) isolates cell-centric morphological descriptors via adaptive nucleus–cytoplasm segmentation, (2) suppresses artifact-sensitive representations through a degradation-invariance projector, and (3) learns distribution-stable features using a prototype-alignment constraint across staining and illumination conditions. To further mitigate hidden shortcuts, we synthesize <em>artifact-shift augmentations</em> simulating realistic laboratory-dependent perturbations, deployed as adversarial negatives during training. Evaluations on a large-scale multi-center Thai cervical cytology dataset demonstrate that CervShort substantially improves cross-center robustness, reduces artifact-induced misclassification, and yields interpretable morphology-grounded attention maps — advancing reliable, equitable cervical cancer AI for real-world clinical workflows.
+  </p>
+</section>
+
+<hr class="divider" />
+
+<!-- METHOD -->
+<section class="section reveal" id="method">
+  <p class="eyebrow">Methodology</p>
+  <h2 class="section-title">Tri-Path Feature Purification</h2>
+  <p style="color:var(--slate); font-size:var(--fs-base); margin-bottom:.5rem;">
+    CervShort decomposes latent representations into pathology-relevant and shortcut-sensitive components — <strong>Z<sub>morph</sub></strong> and <strong>Z<sub>spur</sub></strong> — and enforces causal grounding through three synergistic learning paths.
+  </p>
+
+  <div class="method-grid">
+    <div class="method-card">
+      <div class="method-num">Path 01</div>
+      <h3>Segmentation-Guided Morphology Encoding</h3>
+      <p>An auxiliary nucleus–cytoplasm segmentation head generates binary masks <em>M<sub>nuc</sub></em> and <em>M<sub>cyt</sub></em>. Masked average pooling anchors the morphology embedding to diagnostically meaningful cellular regions, preventing background-driven shortcut exploitation.</p>
+    </div>
+    <div class="method-card">
+      <div class="method-num">Path 02</div>
+      <h3>Degradation-Invariant Shortcut Suppression</h3>
+      <p>A degradation-invariance projector <em>h<sub>ω</sub></em> isolates spurious signals via an orthogonality constraint between <em>Z<sub>morph</sub></em> and <em>Z<sub>spur</sub></em>, and a frequency-domain penalty that suppresses high-frequency artifact signatures in the spurious subspace.</p>
+    </div>
+    <div class="method-card">
+      <div class="method-num">Path 03</div>
+      <h3>Cross-Domain Prototype Alignment</h3>
+      <p>Per-class, per-domain prototype vectors are maintained and aligned across staining and illumination domains via a prototype consistency loss, encouraging morphology features to remain invariant across labs, stains, and digitizer differences.</p>
+    </div>
+  </div>
+
+  <p style="color:var(--slate); font-size:var(--fs-sm); margin-top:1.75rem; line-height:1.7;">
+    In parallel, <strong>Artifact-Shift Adversarial Augmentation (ASAA)</strong> synthesises realistic domain-specific perturbations — illumination drift, local debris occlusion, staining variations, focus blur, and microscopic noise — serving as adversarial negatives during optimisation. The final objective jointly minimises classification loss, morphology consistency, degradation-invariance, prototype alignment, and adversarial artifact robustness.
+  </p>
+</section>
+
+<hr class="divider" />
+
+<!-- RESULTS -->
+<section class="section-wide reveal" id="results">
+  <p class="eyebrow">Experimental Results</p>
+  <h2 class="section-title" style="max-width:700px;">State-of-the-Art Robustness Across Five Independent Laboratories</h2>
+
+  <!-- Two figures side by side -->
+  <div class="results-grid">
+    <div>
+      <div class="fig-block">
+        <img src="img/robustness_radar_chart.png" alt="Multi-dimensional robustness radar chart" />
+        <p class="fig-caption">
+          <strong>Figure 2 (Left).</strong> Multi-dimensional robustness assessment across six clinical axes. CervShort yields a broad, isotropic coverage polygon — demonstrating balanced superiority in cross-center F1, staining invariance, illumination stability, and artifact resistance.
+        </p>
+      </div>
+    </div>
+    <div>
+      <div class="fig-block">
+        <img src="img/performance_decay_plot.png" alt="Performance decay under increasing artifact severity" />
+        <p class="fig-caption">
+          <strong>Figure 2 (Right).</strong> Top-1 accuracy under progressively increasing simulated artifact intensity (0%–100%). The standard baseline suffers catastrophic collapse; CervShort maintains a gracefully degrading stability profile even under maximum artifact saturation.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loss curve -->
+  <div class="fig-block reveal" style="margin-top:1.5rem;">
+    <img src="img/cervshort_loss_curve_clean.png" alt="Learning convergence and generalization gap comparison" />
+    <p class="fig-caption">
+      <strong>Figure 3.</strong> Learning convergence curves and empirical generalization gaps over 100 training epochs. The baseline (red) exhibits a wide generalization gap — a signature of overreliance on shortcut features. CervShort (blue) achieves rapid convergence and a dramatically reduced gap, validating the effectiveness of the tri-path feature purification module in encoding distribution-stable cytological morphology.
+    </p>
+  </div>
+
+  <!-- Summary table -->
+  <h3 style="font-family:var(--serif); font-size:var(--fs-xl); margin-top:3rem; margin-bottom:.5rem;">Cross-Center Diagnostic Performance</h3>
+  <p style="color:var(--slate); font-size:var(--fs-sm); margin-bottom:.5rem;">AUC (%) ↑ and FPR95 (%) ↓ averaged across Labs A–E. All backbones benefit substantially from CervShort integration.</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Backbone</th>
+          <th>Variant</th>
+          <th>AUC ↑</th>
+          <th>FPR95 ↓</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ResNet-18</td>
+          <td>w/o CervShort</td>
+          <td>82.7</td>
+          <td>30.0</td>
+        </tr>
+        <tr>
+          <td>ResNet-18</td>
+          <td><strong>w/ CervShort</strong></td>
+          <td class="best">90.5</td>
+          <td class="best">14.3</td>
+        </tr>
+        <tr>
+          <td>ViT-L/16</td>
+          <td>w/o CervShort</td>
+          <td>87.2</td>
+          <td>25.2</td>
+        </tr>
+        <tr class="row-ours">
+          <td>ViT-L/16</td>
+          <td><strong>w/ CervShort (Ours)</strong></td>
+          <td class="best">95.9</td>
+          <td class="best">8.7</td>
+        </tr>
+        <tr>
+          <td colspan="2" style="color:var(--slate); font-size:var(--fs-xs);">Senior Cytotechnologists (n=4)</td>
+          <td style="font-size:var(--fs-xs); color:var(--slate);">Sens 88.5%</td>
+          <td style="font-size:var(--fs-xs); color:var(--slate);">Spec 92.3%</td>
+        </tr>
+        <tr class="row-ours">
+          <td colspan="2"><strong>CervShort Final — Sensitivity / Specificity</strong></td>
+          <td class="best">94.7%</td>
+          <td class="best">95.1%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- CONTRIBUTIONS -->
+<section class="section reveal" id="contributions">
+  <p class="eyebrow">Key Contributions</p>
+  <h2 class="section-title">What CervShort Offers</h2>
+
+  <ul class="contrib-list">
+    <li>
+      <span class="contrib-num">01</span>
+      <p class="contrib-text">
+        <strong>Novel tri-path feature purification architecture.</strong> CervShort introduces a three-branch purification module that jointly extracts morphology, suppresses shortcut artifacts, and aligns cross-domain feature prototypes — enabling robust and interpretable cytology diagnosis without requiring domain labels or heavy external supervision.
+      </p>
+    </li>
+    <li>
+      <span class="contrib-num">02</span>
+      <p class="contrib-text">
+        <strong>Domain-aware shortcut disruption via adversarial artifact-shift augmentation.</strong> Realistic artifact perturbations — staining drift, illumination shifts, blur, debris, texture noise — are synthesized to explicitly challenge and remove shortcut reliance during training, acting as structured adversarial negatives rather than generic regularisers.
+      </p>
+    </li>
+    <li>
+      <span class="contrib-num">03</span>
+      <p class="contrib-text">
+        <strong>State-of-the-art robustness in cross-center cervical cytology classification.</strong> Extensive experiments across five independent Thai laboratories show CervShort substantially reduces artifact-induced misclassification, improves cross-center generalisation, and produces morphology-grounded attention maps that exceed expert cytotechnologist-level diagnostic agreement.
+      </p>
+    </li>
+  </ul>
+</section>
+
+<hr class="divider" />
+
+<!-- CITATION -->
+<section class="section reveal" id="citation">
+  <p class="eyebrow">BibTeX Citation</p>
+  <h2 class="section-title">Cite This Work</h2>
+
+  <div class="citation-box">
+    <button class="copy-btn" onclick="copyBib()">Copy</button>
+    <pre id="bib">@article{panboonyuen2026cervshort,
+  title     = {CervShort: Domain-Aware Shortcut Disruption for Robust
+               Cervical Cancer Cytology Classification},
+  author    = {Panboonyuen, Teerapong},
+  year      = {2026},
+  url       = {https://kaopanboonyuen.github.io/CervShort},
+  note      = {College of Computing, Khon Kaen University; MAPS Research
+               Center, Chulalongkorn University, Thailand}
+}</pre>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>
+    <a href="https://github.com/kaopanboonyuen/CervShort" target="_blank">GitHub</a> ·
+    <a href="https://kaopanboonyuen.github.io/CervShort" target="_blank">Project Page</a> ·
+    Built by <a href="https://kaopanboonyuen.github.io" target="_blank">Teerapong Panboonyuen</a>
+  </p>
+  <p style="margin-top:.5rem; font-size:var(--fs-xs);">
+    Supported by the C2F Postdoctoral Fellowship, Chulalongkorn University &amp; Talent Scholarship, Khon Kaen University, Thailand.
+  </p>
+</footer>
+
+<script>
+  // Intersection observer for reveal animations
+  const els = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.08 });
+  els.forEach(el => io.observe(el));
+
+  // Copy BibTeX
+  function copyBib() {
+    navigator.clipboard.writeText(document.getElementById('bib').textContent);
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  }
+</script>
+</body>
+</html>
