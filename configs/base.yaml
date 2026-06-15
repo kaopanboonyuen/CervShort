@@ -1,0 +1,48 @@
+# ╔══════════════════════════════════════════════════════════════╗
+# ║  CervShort — Base Configuration                             ║
+# ║  Author: Teerapong Panboonyuen (Kao Panboonyuen)            ║
+# ╚══════════════════════════════════════════════════════════════╝
+
+data:
+  root: data/cervical_cytology
+  num_classes: 5
+  num_domains: 5
+  patch_size: 256
+  split_file: null
+
+model:
+  feature_dim: 1024
+  proto_dim: 256
+  proto_momentum: 0.97
+
+cervshort:
+  lambda_morph: 0.5
+  lambda_deg: 0.3
+  lambda_proto: 0.2
+  lambda_adv: 0.1
+  beta_freq: 0.1
+  seg_threshold: 0.5
+  dilation_kernel: 5
+  hi_freq_thr: 0.5
+
+training:
+  optimizer: adamw
+  lr: 3.0e-4
+  weight_decay: 0.05
+  batch_size: 128
+  epochs: 200
+  warmup_epochs: 5
+  scheduler: cosine
+  label_smoothing: 0.1
+  amp: true
+  num_workers: 4
+  seed: 42
+
+augmentation:
+  p_each: 0.5
+  debris_count: 5
+  debris_size_ratio: 0.08
+
+hardware:
+  gpu: "NVIDIA T4 16GiB"
+  cuda_compute: 7.5

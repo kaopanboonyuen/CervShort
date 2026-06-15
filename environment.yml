@@ -1,0 +1,24 @@
+name: cervshort
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+
+dependencies:
+  - python=3.10
+  - pytorch>=2.0.0
+  - torchvision>=0.15.0
+  - pytorch-cuda=11.8
+  - numpy>=1.24.0
+  - scikit-learn>=1.3.0
+  - matplotlib>=3.7.0
+  - pillow>=9.5.0
+  - pyyaml>=6.0
+  - tqdm>=4.65.0
+  - scipy>=1.11.0
+  - pandas>=2.0.0
+  - pip
+  - pip:
+    - timm>=0.9.0
+    - -e .

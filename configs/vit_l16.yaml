@@ -1,0 +1,14 @@
+# CervShort — ViT-L/16 Configuration
+# Author: Teerapong Panboonyuen
+
+defaults:
+  - base
+
+model:
+  backbone: vit_l16
+  feature_dim: 1024
+  proto_dim: 256
+
+training:
+  lr: 3.0e-4
+  batch_size: 64   # ViT needs smaller batch for GPU memory

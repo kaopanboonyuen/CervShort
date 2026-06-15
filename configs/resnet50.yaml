@@ -1,0 +1,14 @@
+# CervShort — ResNet-50 Configuration
+# Author: Teerapong Panboonyuen
+
+defaults:
+  - base
+
+model:
+  backbone: resnet50
+  feature_dim: 512
+  proto_dim: 256
+
+training:
+  lr: 1.0e-3
+  batch_size: 128
