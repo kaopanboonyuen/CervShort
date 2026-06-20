@@ -138,7 +138,7 @@ pip install -e .
 
 ### 2. Dataset Preparation
 
-The dataset comprises **25,412 digitized cytology patches** from 5 independent Thai laboratories, annotated following the Bethesda 2014 guidelines.
+The dataset comprises **25,412 digitized cytology patches** from independent laboratories, annotated following the Bethesda 2014 guidelines.
 
 ```
 data/
